@@ -2,7 +2,7 @@
 @if (slides().length) {
   <section class="hero">
     <div class="hero-frame">
-      @for (slide of slides(); track slide.title; let i = $index) {
+      @for (slide of slides(); track $index; let i = $index) {
         <a
           class="hero-slide"
           [class.on]="i === slideIndex()"
@@ -13,19 +13,10 @@
           <img
             class="hero-img"
             [src]="slide.image"
-            [alt]="slide.title"
+            [alt]="slide.alt"
             [attr.loading]="i === 0 ? 'eager' : 'lazy'"
             (error)="onImageError($event)"
           />
-          <div class="hero-shade"></div>
-          <div class="rail hero-copy-rail">
-            <div class="hero-copy">
-              <span class="chip hero-chip">{{ slide.eyebrow }}</span>
-              <h2 class="display hero-title">{{ slide.title }}</h2>
-              @if (slide.sub) { <p class="hero-sub">{{ slide.sub }}</p> }
-              <span class="price hero-price"><span class="cur">Rs</span> {{ slide.price | number }}</span>
-            </div>
-          </div>
         </a>
       }
 
@@ -34,7 +25,7 @@
         <button class="hero-arrow next" (click)="go(1)" aria-label="Next offer">›</button>
 
         <div class="hero-dots">
-          @for (slide of slides(); track slide.title; let i = $index) {
+          @for (slide of slides(); track $index; let i = $index) {
             <button
               class="hero-dot"
               [class.on]="i === slideIndex()"

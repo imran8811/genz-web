@@ -1,5 +1,6 @@
 /* ===== Hero carousel — full-bleed =====
-   Edge-to-edge banner; only the copy inside pulls back onto the rail. */
+   Edge-to-edge banner. The artwork carries its own copy, so the frame holds
+   nothing but the image plus the arrows, dots and progress bar. */
 .hero-frame {
   position: relative;
   width: 100%;
@@ -19,35 +20,6 @@
 .hero-slide.on { opacity: 1; visibility: visible; }
 
 .hero-img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Dark wash from the bottom-left so copy stays readable over any photo. */
-.hero-shade {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.35) 45%, transparent 75%),
-    linear-gradient(to right, rgba(0, 0, 0, 0.65), transparent 60%);
-}
-
-.hero-copy-rail {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 2.5rem;
-}
-.hero-copy { max-width: 34rem; }
-.hero-chip { margin-bottom: 0.6rem; }
-.hero-title { font-size: clamp(1.6rem, 5vw, 3rem); margin-bottom: 0.4rem; }
-.hero-sub {
-  color: var(--text-2);
-  font-size: 0.95rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.hero-price { display: inline-block; margin-top: 0.6rem; font-size: 1.35rem; color: var(--yellow); }
 
 .hero-arrow {
   position: absolute;
@@ -267,7 +239,6 @@
 }
 
 @media (max-width: 520px) {
-  .hero-copy-rail { bottom: 2rem; }
   .hero-arrow { width: 2.5rem; height: 2.5rem; font-size: 1.4rem; }
   .hero-arrow.prev { left: 0.5rem; }
   .hero-arrow.next { right: 0.5rem; }

@@ -16,12 +16,10 @@ import { Category, Deal, MenuItem } from '../../models/catalog.model';
  * (`CatalogService.imageFor`).
  */
 
+/** The banner artwork carries its own copy, so a slide is just the image. */
 interface HeroSlide {
   image: string;
-  eyebrow: string;
-  title: string;
-  sub: string;
-  price: number;
+  alt: string;
 }
 
 interface CategoryTile {
@@ -45,9 +43,6 @@ const PLACEHOLDER = 'images/placeholder.svg';
 
 const HERO_COUNT = 5;
 const POPULAR_COUNT = 8;
-
-/** "Deal 7" is a slot number, not a name — such deals lead with their contents. */
-const GENERIC_DEAL_NAME = /^deal\s*\d+$/i;
 
 @Component({
   selector: 'app-home',
@@ -120,16 +115,10 @@ export class Home implements OnDestroy {
     }
     deals.forEach(take);
 
-    return picked.map((d) => {
-      const generic = GENERIC_DEAL_NAME.test(d.name);
-      return {
-        image: this.catalog.imageFor({ image_url: d.image_url, category_slug: d.category_slug }),
-        eyebrow: d.tag ?? d.group ?? 'Deal',
-        title: generic && d.description ? d.description : d.name,
-        sub: generic ? d.name : (d.description ?? d.extras.join(' · ')),
-        price: d.price,
-      };
-    });
+    return picked.map((d) => ({
+      image: this.catalog.imageFor({ image_url: d.image_url, category_slug: d.category_slug }),
+      alt: d.name,
+    }));
   }
 
   private buildTiles(categories: Category[], hasDeals: boolean): CategoryTile[] {
