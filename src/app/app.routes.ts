@@ -8,6 +8,7 @@ import { ResetPassword } from './components/reset-password/reset-password';
 import { Cart } from './components/cart/cart';
 import { Checkout } from './components/checkout/checkout';
 import { OrderConfirmation } from './components/order-confirmation/order-confirmation';
+import { AccountDeletion, Privacy } from './components/legal/legal';
 import { guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -54,5 +55,14 @@ export const routes: Routes = [
         path: "reset-password",
         component: ResetPassword,
         canActivate: [guestGuard]
+    },
+    // Google Play requires both to be reachable without signing in.
+    {
+        path: "privacy",
+        component: Privacy
+    },
+    {
+        path: "account-deletion",
+        component: AccountDeletion
     }
 ];
