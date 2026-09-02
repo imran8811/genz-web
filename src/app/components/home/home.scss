@@ -1,0 +1,291 @@
+/* ===== Hero carousel — full-bleed =====
+   Edge-to-edge banner; only the copy inside pulls back onto the rail. */
+.hero-frame {
+  position: relative;
+  width: 100%;
+  height: 28.5rem;
+  overflow: hidden;
+  background: var(--card);
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease), visibility 0.6s var(--ease);
+}
+.hero-slide.on { opacity: 1; visibility: visible; }
+
+.hero-img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Dark wash from the bottom-left so copy stays readable over any photo. */
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.35) 45%, transparent 75%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.65), transparent 60%);
+}
+
+.hero-copy-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2.5rem;
+}
+.hero-copy { max-width: 34rem; }
+.hero-chip { margin-bottom: 0.6rem; }
+.hero-title { font-size: clamp(1.6rem, 5vw, 3rem); margin-bottom: 0.4rem; }
+.hero-sub {
+  color: var(--text-2);
+  font-size: 0.95rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hero-price { display: inline-block; margin-top: 0.6rem; font-size: 1.35rem; color: var(--yellow); }
+
+.hero-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--text);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.hero-arrow:hover { background: var(--card-hover); transform: translateY(-50%) scale(1.06); }
+.hero-arrow.prev { left: 1rem; }
+.hero-arrow.next { right: 1rem; }
+
+.hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 1.1rem;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+.hero-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  padding: 0;
+  border: none;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.4);
+  transition: width 0.3s var(--ease), background 0.3s var(--ease);
+}
+.hero-dot.on { width: 2rem; background: var(--red); }
+
+.hero-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.hero-bar span {
+  display: block;
+  height: 100%;
+  background: var(--grad-hot);
+  transition: width 0.1s linear;
+}
+
+/* ===== Category strip ===== */
+.cats { padding: 1.5rem 0 0.5rem; }
+.cat-scroll {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+.cat-scroll::-webkit-scrollbar { display: none; }
+
+.cat-tile {
+  flex: 0 0 auto;
+  width: 150px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--card);
+  text-align: center;
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease);
+}
+.cat-tile:hover { transform: translateY(-3px); border-color: var(--red); background: var(--card-hover); }
+
+.cat-thumb {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--surface);
+}
+.cat-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cat-name { font-size: 0.85rem; font-weight: 700; }
+
+/* ===== Item grid ===== */
+.menu { padding: 1.5rem 0 3rem; }
+.menu-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.menu-head h2 { font-size: 1.4rem; font-weight: 800; }
+.menu-head p { color: var(--text-2); font-size: 0.9rem; }
+.menu-all { font-weight: 700; color: var(--yellow); white-space: nowrap; }
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.625rem;
+}
+
+.item-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.item-card:hover { transform: translateY(-3px); border-color: var(--red); }
+
+/* The media box owns its height and the image is taken out of flow inside it.
+   A flex item's `height: 100%` resolves against an indefinite height, so a
+   portrait photo (the 211x600 drinks shot) fell back to its intrinsic size,
+   grew past the 4/3 ratio and stretched every other card in the grid row. */
+.item-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background: var(--surface);
+}
+.item-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.item-tag {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--grad);
+  border-radius: 50px;
+}
+
+.item-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+.item-text { flex: 1; min-height: 3.5rem; }
+.item-text h3 { font-size: 0.95rem; font-weight: 800; }
+.item-text p {
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  color: var(--text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-price { display: flex; align-items: baseline; gap: 0.4rem; }
+.item-price .price { font-size: 1.05rem; }
+.item-from { font-size: 0.75rem; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.04em; }
+.menu-empty { grid-column: 1 / -1; color: var(--text-2); padding: 1rem 0; }
+
+.item-add {
+  width: 100%;
+  height: 2.5rem;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #fff;
+  background: var(--grad);
+  border: none;
+  border-radius: var(--radius-sm);
+  transition: transform 0.15s var(--ease), box-shadow 0.25s var(--ease);
+}
+.item-add:hover { box-shadow: 0 8px 22px var(--red-glow); }
+.item-add:active { transform: scale(0.98); }
+
+/* ===== Info cards ===== */
+.info { padding-bottom: 3.5rem; }
+.info-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+.info-card { padding: 1.75rem; }
+.info-card h3 { font-size: 1.05rem; font-weight: 800; }
+.info-card p { color: var(--text-2); margin-top: 0.3rem; }
+.info-card .mt { margin-top: 1.25rem; }
+
+.feat-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
+.mt-lg { margin-top: 1.5rem; }
+
+/* ===== Breakpoints ===== */
+@media (min-width: 640px) {
+  .hero-frame { height: 32.5rem; }
+  .item-grid { gap: 0.875rem; }
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 768px) {
+  .hero-frame { height: 36.5rem; }
+  .item-grid { grid-template-columns: repeat(4, 1fr); gap: 25px; }
+}
+
+@media (max-width: 520px) {
+  .hero-copy-rail { bottom: 2rem; }
+  .hero-arrow { width: 2.5rem; height: 2.5rem; font-size: 1.4rem; }
+  .hero-arrow.prev { left: 0.5rem; }
+  .hero-arrow.next { right: 0.5rem; }
+  .cat-tile { width: 120px; }
+  .cat-thumb { width: 64px; height: 64px; }
+}
+
+/* Add-to-cart confirmation (mirrors the menu page's toast) */
+.toast {
+  position: fixed;
+  top: calc(var(--header-h) + 1rem);
+  right: 1.25rem;
+  z-index: 80;
+  background: #16331c;
+  color: #b6f5c5;
+  border: 1px solid #2e6b3c;
+  padding: 0.7rem 1.1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  animation: fadeUp 0.25s var(--ease) both;
+}

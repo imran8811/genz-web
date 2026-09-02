@@ -1,0 +1,45 @@
+<header [class.scrolled]="scrolled()">
+  <!-- Brand bar: full-bleed to 1800px. Outer tracks flex so the wordmark
+       stays centred whatever the side groups weigh. -->
+  <div class="rail bar">
+    <div class="side left">
+      <button class="burger" [class.open]="mobileMenuOpen()" (click)="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-desktop">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/menu" routerLinkActive="active">Menu</a>
+        <a routerLink="/menu" fragment="deals">Deals</a>
+      </nav>
+    </div>
+
+    <a routerLink="/" class="brand" (click)="closeMenu()">
+      <img src="images/logo.png" alt="GEN Z Foods" width="436" height="67" />
+    </a>
+
+    <div class="side right">
+      <button class="icon-btn" aria-label="Search">🔍</button>
+      @if (isAuthenticated()) {
+        <button class="icon-btn" (click)="logout()" [attr.aria-label]="'Log out of ' + user()?.name">⏻</button>
+      } @else {
+        <a routerLink="/login" class="icon-btn" aria-label="Login" (click)="closeMenu()">👤</a>
+      }
+      <a routerLink="/cart" class="icon-btn cart-btn" aria-label="Cart" (click)="closeMenu()">
+        🛒
+        @if (cartCount() > 0) { <span class="cart-badge">{{ cartCount() }}</span> }
+      </a>
+    </div>
+  </div>
+
+  <nav class="nav-mobile" [class.open]="mobileMenuOpen()">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
+    <a routerLink="/menu" routerLinkActive="active" (click)="closeMenu()">Menu</a>
+    <a routerLink="/menu" fragment="deals" (click)="closeMenu()">Deals</a>
+    @if (isAuthenticated()) {
+      <span class="hello">Hi, {{ user()?.name }}</span>
+      <button class="btn btn-ghost btn-sm" (click)="logout()">Logout</button>
+    } @else {
+      <a routerLink="/login" class="btn btn-ghost btn-sm" (click)="closeMenu()">Login</a>
+    }
+  </nav>
+</header>

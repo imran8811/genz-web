@@ -1,0 +1,51 @@
+<section class="cart-page">
+  <div class="container">
+    <h1 class="display page-title">Your <span class="text-yellow">Cart</span></h1>
+
+    @if (isEmpty()) {
+      <div class="empty card">
+        <span class="empty-emoji">🛒</span>
+        <h3>Your cart is empty</h3>
+        <p>Add some delicious items to get started.</p>
+        <a routerLink="/menu" class="btn btn-primary">Browse Menu</a>
+      </div>
+    } @else {
+      <div class="cart-layout">
+        <div class="lines">
+          @for (line of lines(); track line.key) {
+            <div class="line card">
+              <div class="line-emoji">{{ line.kind === 'deal' ? '🎁' : '🍔' }}</div>
+              <div class="line-info">
+                <h3>{{ line.name }}</h3>
+                @if (line.variantLabel) { <span class="chip line-chip">{{ line.variantLabel }}</span> }
+                @if (line.selections?.length) {
+                  <p class="line-sel">{{ line.selections!.join(', ') }}</p>
+                }
+                <span class="line-unit muted">Rs {{ line.unitPrice | number }} each</span>
+              </div>
+              <div class="line-qty">
+                <button (click)="dec(line.key)">−</button>
+                <span>{{ line.quantity }}</span>
+                <button (click)="inc(line.key)">+</button>
+              </div>
+              <div class="line-total">
+                <span class="price text-yellow">Rs {{ (line.unitPrice * line.quantity) | number }}</span>
+                <button class="rm" (click)="remove(line.key)">Remove</button>
+              </div>
+            </div>
+          }
+          <button class="clear-btn" (click)="clear()">Clear cart</button>
+        </div>
+
+        <aside class="summary card">
+          <h3>Order Summary</h3>
+          <div class="row"><span>Subtotal ({{ itemCount() }})</span><span>Rs {{ subtotal() | number }}</span></div>
+          <div class="row"><span>Delivery</span><span>{{ deliveryFee() > 0 ? ('Rs ' + (deliveryFee() | number)) : 'Free' }}</span></div>
+          <div class="row total"><span>Total</span><span class="text-yellow">Rs {{ total() | number }}</span></div>
+          <a routerLink="/checkout" class="btn btn-primary btn-block">Checkout</a>
+          <a routerLink="/menu" class="btn btn-ghost btn-block">Add more</a>
+        </aside>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,114 @@
+/* ----- Brand bar ----- */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+}
+header.scrolled { border-bottom-color: var(--border); background: rgba(11, 11, 13, 0.92); }
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+/* Equal-weight side tracks are what centre the wordmark, not its content. */
+.side { flex: 1 1 0; display: flex; align-items: center; gap: 0.6rem; }
+.side.right { justify-content: flex-end; }
+
+.brand { flex: 0 0 auto; }
+.brand img { width: 145px; height: auto; max-width: none; }
+
+.nav-desktop { display: flex; align-items: center; gap: 1.6rem; }
+.nav-desktop a {
+  position: relative;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-2);
+  transition: color 0.2s var(--ease);
+}
+.nav-desktop a:hover, .nav-desktop a.active { color: var(--text); }
+.nav-desktop a.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 2px;
+  background: var(--grad-hot);
+  border-radius: 2px;
+}
+
+/* ----- Round action buttons ----- */
+.icon-btn {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  line-height: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.icon-btn:hover { background: var(--card-hover); border-color: var(--red); }
+
+.cart-badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  min-width: 18px; height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grad);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  border-radius: 10px;
+}
+
+/* ----- Mobile ----- */
+.burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+.burger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s var(--ease); }
+.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.open span:nth-child(2) { opacity: 0; }
+.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav-mobile { display: none; }
+
+@media (max-width: 860px) {
+  .nav-desktop { display: none; }
+  .burger { display: flex; }
+
+  .nav-mobile {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+    padding: 1.5rem;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-120%);
+    transition: transform 0.3s var(--ease);
+  }
+  .nav-mobile.open { transform: translateY(0); }
+  .nav-mobile a { font-weight: 600; color: var(--text-2); }
+  .nav-mobile a.active { color: var(--text); }
+  .hello { font-size: 0.9rem; color: var(--text-2); }
+}
+
+/* Wordmark steps up with the viewport, the way a full-bleed brand bar wants. */
+@media (min-width: 640px) { .brand img { width: 200px; } .bar { padding-top: 0.75rem; padding-bottom: 0.75rem; } }
+@media (min-width: 768px) { .brand img { width: 250px; } }
+@media (min-width: 1024px) { .brand img { width: 290px; } }
+@media (min-width: 1280px) { .brand img { width: 385px; } }

@@ -1,0 +1,12 @@
+@use '../shared/auth-form.scss';
+
+.forgot-link {
+    font-size: 0.85rem;
+    color: var(--yellow);
+    font-weight: 600;
+    transition: color 0.3s;
+
+    &:hover {
+        color: var(--red);
+    }
+}

@@ -1,0 +1,250 @@
+/* ===== GEN Z Foods — Global Design System ===== */
+
+:root {
+    /* Brand — sampled from the Gen Z Foods logo */
+    --red: #ff1f2d;
+    --red-deep: #d80f1c;
+    --yellow: #ffe000;
+    --yellow-deep: #f4c500;
+
+    /* Surfaces */
+    --bg: #0b0b0d;
+    --bg-2: #111114;
+    --card: #161619;
+    --card-hover: #1d1d22;
+    --surface: #141417;
+
+    /* Text */
+    --text: #f6f6f7;
+    --text-2: #a4a4ad;
+    --muted: #6c6c77;
+
+    /* Lines & glass */
+    --border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(11, 11, 13, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.07);
+
+    /* Accents */
+    --red-glow: rgba(255, 31, 45, 0.35);
+    --yellow-glow: rgba(255, 224, 0, 0.3);
+    --grad: linear-gradient(120deg, var(--red), var(--red-deep));
+    --grad-hot: linear-gradient(120deg, var(--yellow), var(--red));
+
+    /* Type */
+    --font: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --display: 'Roboto', 'Outfit', sans-serif;
+
+    /* Layout */
+    --container: 1200px;
+    --radius: 18px;
+    --radius-sm: 12px;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --header-h: 72px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+button { font-family: inherit; cursor: pointer; }
+
+main { min-height: 60vh; }
+
+.container {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ---------- Display / headings ---------- */
+.display {
+    font-family: var(--display);
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+.text-grad {
+    background: var(--grad-hot);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.text-yellow { color: var(--yellow); }
+.text-red { color: var(--red); }
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease);
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: var(--grad);
+    color: #fff;
+    box-shadow: 0 6px 22px var(--red-glow);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 34px var(--red-glow); }
+
+.btn-yellow {
+    background: linear-gradient(120deg, var(--yellow), var(--yellow-deep));
+    color: #1a1a1a;
+    box-shadow: 0 6px 22px var(--yellow-glow);
+}
+.btn-yellow:hover { transform: translateY(-2px); box-shadow: 0 10px 34px var(--yellow-glow); }
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
+
+.btn-sm { padding: 0.55rem 1.1rem; font-size: 0.9rem; }
+.btn-block { width: 100%; }
+
+/* ---------- Chips / badges / pills ---------- */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.badge-special { background: var(--grad); color: #fff; }
+.badge-signature { background: linear-gradient(120deg, var(--yellow), var(--yellow-deep)); color: #1a1a1a; }
+
+/* ---------- Cards ---------- */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 212, 0, 0.4);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Section heading ---------- */
+.section { padding: 4.5rem 0; }
+.section-head { margin-bottom: 2.5rem; }
+.section-head .eyebrow {
+    color: var(--yellow);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.section-head h2 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-top: 0.5rem;
+}
+.section-head p { color: var(--text-2); margin-top: 0.75rem; max-width: 560px; }
+
+/* ---------- Forms ---------- */
+.field { margin-bottom: 1.1rem; }
+.field label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-2); }
+.input, .textarea, select.input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--bg-2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s var(--ease);
+}
+.input:focus, .textarea:focus, select.input:focus { outline: none; border-color: var(--yellow); }
+
+/* ---------- Utility ---------- */
+.price { font-weight: 800; }
+.price .cur { color: var(--text-2); font-weight: 600; font-size: 0.8em; }
+.muted { color: var(--muted); }
+.center { text-align: center; }
+.spinner {
+    width: 28px; height: 28px;
+    border: 3px solid var(--border);
+    border-top-color: var(--yellow);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fadeUp 0.5s var(--ease) both; }
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2a2a30; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #3a3a42; }
+
+/* ---------- Full-bleed rails ----------
+   The site runs edge-to-edge rather than inside a 1200px column: the brand bar
+   spans the viewport (capped at 1800px so it doesn't sprawl on ultrawides) and
+   only the secondary page bar pulls in. `.container` is still used by the inner
+   pages, which have not been reworked yet. */
+.rail {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 0.75rem;
+}
+
+@media (min-width: 1024px) {
+    .rail { padding: 0 0.5rem; }
+}

@@ -1,0 +1,58 @@
+.checkout-page { padding: 2.5rem 0 5rem; min-height: 70vh; }
+.page-title { font-size: clamp(2.2rem, 6vw, 3.5rem); margin-bottom: 2rem; }
+
+.empty { text-align: center; padding: 3rem; max-width: 420px; margin: 0 auto; }
+.empty p { color: var(--text-2); margin-bottom: 1.25rem; }
+
+.checkout-layout { display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
+.form-col { display: flex; flex-direction: column; gap: 1.25rem; }
+.block { padding: 1.5rem; }
+.block:hover { transform: none; }
+.block h3 { font-size: 1.15rem; margin-bottom: 1.1rem; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.pay {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.pay.on { border-color: var(--yellow); background: rgba(255,212,0,0.07); }
+.pay input { accent-color: var(--yellow); width: 18px; height: 18px; }
+.pay-ico { font-size: 1.4rem; }
+.pay span span, .pay > span { display: flex; flex-direction: column; }
+.pay small { color: var(--text-2); font-size: 0.8rem; }
+
+.err { color: #ff6b6b; font-weight: 600; }
+
+.login-note { padding: 1rem 1.25rem; border-color: rgba(255,212,0,0.4); }
+.login-note:hover { transform: none; }
+.login-note a { color: var(--yellow); font-weight: 700; text-decoration: underline; }
+
+.summary { padding: 1.5rem; position: sticky; top: calc(var(--header-h) + 1rem); }
+.summary:hover { transform: none; }
+.summary h3 { font-size: 1.15rem; margin-bottom: 1rem; }
+.mini-lines { display: flex; flex-direction: column; gap: 0.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); margin-bottom: 0.75rem; }
+.mini { display: flex; justify-content: space-between; gap: 0.75rem; font-size: 0.85rem; color: var(--text-2); }
+.mini em { color: var(--muted); font-style: normal; }
+.row { display: flex; justify-content: space-between; padding: 0.4rem 0; color: var(--text-2); }
+.row.total {
+  border-top: 1px solid var(--border);
+  margin-top: 0.4rem;
+  padding-top: 0.9rem;
+  color: var(--text);
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+.summary .btn { margin-top: 1rem; }
+
+@media (max-width: 820px) {
+  .checkout-layout { grid-template-columns: 1fr; }
+  .summary { position: static; }
+}
+@media (max-width: 480px) { .grid-2 { grid-template-columns: 1fr; } }

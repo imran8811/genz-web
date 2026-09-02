@@ -1,0 +1,141 @@
+<!-- ===== Hero carousel — real deals from the genz-admin feed ===== -->
+@if (slides().length) {
+  <section class="hero">
+    <div class="hero-frame">
+      @for (slide of slides(); track slide.title; let i = $index) {
+        <a
+          class="hero-slide"
+          [class.on]="i === slideIndex()"
+          [attr.aria-hidden]="i === slideIndex() ? null : 'true'"
+          routerLink="/menu"
+          fragment="deals"
+        >
+          <img
+            class="hero-img"
+            [src]="slide.image"
+            [alt]="slide.title"
+            [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+            (error)="onImageError($event)"
+          />
+          <div class="hero-shade"></div>
+          <div class="rail hero-copy-rail">
+            <div class="hero-copy">
+              <span class="chip hero-chip">{{ slide.eyebrow }}</span>
+              <h2 class="display hero-title">{{ slide.title }}</h2>
+              @if (slide.sub) { <p class="hero-sub">{{ slide.sub }}</p> }
+              <span class="price hero-price"><span class="cur">Rs</span> {{ slide.price | number }}</span>
+            </div>
+          </div>
+        </a>
+      }
+
+      @if (slides().length > 1) {
+        <button class="hero-arrow prev" (click)="go(-1)" aria-label="Previous offer">‹</button>
+        <button class="hero-arrow next" (click)="go(1)" aria-label="Next offer">›</button>
+
+        <div class="hero-dots">
+          @for (slide of slides(); track slide.title; let i = $index) {
+            <button
+              class="hero-dot"
+              [class.on]="i === slideIndex()"
+              (click)="select(i)"
+              [attr.aria-label]="'Show offer ' + (i + 1)"
+              [attr.aria-current]="i === slideIndex() ? 'true' : null"
+            ></button>
+          }
+        </div>
+
+        <div class="hero-bar"><span [style.width.%]="progress() * 100"></span></div>
+      }
+    </div>
+  </section>
+}
+
+<!-- ===== Category strip — horizontal snap scroller ===== -->
+@if (categories().length) {
+  <section class="cats">
+    <div class="rail">
+      <div class="cat-scroll">
+        @for (cat of categories(); track cat.slug) {
+          <a routerLink="/menu" [fragment]="cat.slug" class="cat-tile">
+            <div class="cat-thumb">
+              <img [src]="cat.image" [alt]="cat.name" loading="lazy" (error)="onImageError($event)" />
+            </div>
+            <span class="cat-name">{{ cat.name }}</span>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+}
+
+<!-- ===== Item grid — 2 up on mobile, 4 up on desktop ===== -->
+<section class="menu">
+  <div class="rail">
+    <div class="menu-head">
+      <div>
+        <h2>Popular right now</h2>
+        <p>
+          @if (loading()) { Loading today's menu… }
+          @else if (failed()) { We couldn't load the menu just now — please try again. }
+          @else { Straight from today's menu. }
+        </p>
+      </div>
+      <a routerLink="/menu" class="menu-all">View all →</a>
+    </div>
+
+    <div class="item-grid">
+      @for (card of products(); track card.item.slug) {
+        <article class="item-card">
+          <div class="item-media">
+            <img [src]="card.image" [alt]="card.name" loading="lazy" (error)="onImageError($event)" />
+            @if (card.badge) { <span class="item-tag">{{ card.badge }}</span> }
+          </div>
+          <div class="item-body">
+            <div class="item-text">
+              <h3>{{ card.name }}</h3>
+              @if (card.description) { <p>{{ card.description }}</p> }
+            </div>
+            <div class="item-price">
+              @if (card.from) { <span class="item-from">from</span> }
+              <span class="price"><span class="cur">Rs</span> {{ card.price | number }}</span>
+            </div>
+            <button type="button" class="item-add" (click)="add(card)">
+              {{ card.from ? 'Choose size' : 'Add to cart' }}
+            </button>
+          </div>
+        </article>
+      } @empty {
+        @if (!loading()) {
+          <p class="menu-empty">No items on the menu right now.</p>
+        }
+      }
+    </div>
+  </div>
+</section>
+
+@if (toast()) { <div class="toast">✓ {{ toast() }}</div> }
+
+<!-- ===== Info cards ===== -->
+<section class="info">
+  <div class="rail info-grid">
+    <div class="info-card card">
+      <h3>📍 Find Us</h3>
+      <p>Garden Town, Sher Shah Road, Multan</p>
+      <h3 class="mt">🕑 Open</h3>
+      <p>02:00 PM – 2:00 AM, every day</p>
+      <h3 class="mt">📞 Call to Order</h3>
+      <p>03 000-911-000</p>
+    </div>
+    <div class="info-card card">
+      <h3>Why Gen Z?</h3>
+      <div class="feat-chips">
+        <span class="chip">Fresh daily</span>
+        <span class="chip">Fast delivery</span>
+        <span class="chip">Bold flavours</span>
+        <span class="chip">Student friendly</span>
+      </div>
+      <a routerLink="/menu" class="btn btn-primary mt-lg">Start your order</a>
+    </div>
+  </div>
+</section>

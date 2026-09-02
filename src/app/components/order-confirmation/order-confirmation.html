@@ -1,0 +1,50 @@
+<section class="confirmation-page">
+  <div class="container">
+    @if (loading()) {
+      <div class="card confirm">
+        <h2>Loading your order…</h2>
+      </div>
+    } @else if (order(); as o) {
+      <div class="card confirm fade-up">
+        <div class="check">✓</div>
+        <h1 class="display">Order <span class="text-yellow">Confirmed!</span></h1>
+        <p class="sub">Thank you, {{ o.delivery.recipient_name }} — your order is on its way. 🔥</p>
+
+        <div class="order-no">
+          <span>Order Number</span>
+          <strong>{{ o.orderNumber }}</strong>
+        </div>
+
+        <div class="lines">
+          @for (line of o.lines; track line.key) {
+            <div class="line">
+              <span>{{ line.quantity }}× {{ line.name }}@if (line.variantLabel) { <em> ({{ line.variantLabel }})</em> }</span>
+              <span>Rs {{ (line.unitPrice * line.quantity) | number }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="totals">
+          <div class="row"><span>Subtotal</span><span>Rs {{ o.subtotal | number }}</span></div>
+          <div class="row"><span>Delivery</span><span>{{ o.deliveryFee > 0 ? ('Rs ' + (o.deliveryFee | number)) : 'Free' }}</span></div>
+          <div class="row total"><span>Total</span><span class="text-yellow">Rs {{ o.total | number }}</span></div>
+        </div>
+
+        <div class="meta">
+          <div><span>Payment</span><strong>{{ paymentLabel }}</strong></div>
+          <div><span>Deliver to</span><strong>{{ o.delivery.address_line_1 }}, {{ o.delivery.city }}</strong></div>
+        </div>
+
+        <a routerLink="/menu" class="btn btn-primary">Order Again</a>
+      </div>
+    } @else {
+      <div class="card confirm">
+        <h2>{{ notFound() ? 'Order not found' : 'No recent order found' }}</h2>
+        <p class="sub">
+          {{ notFound() ? "We couldn't find that order on your account." : "Looks like you haven't placed an order yet." }}
+        </p>
+        <a routerLink="/menu" class="btn btn-primary">Browse Menu</a>
+      </div>
+    }
+  </div>
+</section>

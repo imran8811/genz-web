@@ -1,0 +1,35 @@
+<footer>
+  <div class="container grid">
+    <div class="col brand-col">
+      <img src="images/logo.png" alt="GEN Z Foods" class="flogo" />
+      <p class="tag">{{ site()?.restaurant?.tagline || 'Premium Fast Food Restaurant' }}</p>
+      <p class="tag small">Crafted bold for the new generation. 🔥</p>
+    </div>
+
+    <div class="col">
+      <h4>Explore</h4>
+      <a routerLink="/">Home</a>
+      <a routerLink="/menu">Menu</a>
+      <a routerLink="/menu" fragment="deals">Deals</a>
+      <a routerLink="/cart">Cart</a>
+    </div>
+
+    <div class="col">
+      <h4>Visit Us</h4>
+      <p>{{ site()?.restaurant?.address || 'Garden Town, Sher Shah Road, Multan' }}</p>
+      <p>🕑 {{ site()?.restaurant?.timing || '02:00 PM - 2:00 AM' }}</p>
+    </div>
+
+    <div class="col">
+      <h4>Order Now</h4>
+      <a [href]="'tel:' + (site()?.restaurant?.phone || '')">📞 {{ site()?.restaurant?.phone || '03 000-911-000' }}</a>
+      <a [href]="whatsappLink" target="_blank" rel="noopener">💬 WhatsApp</a>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="container">
+      <span>© {{ currentYear }} GEN Z Foods. All rights reserved.</span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" role="img" aria-label="Placeholder image">
+  <rect width="600" height="600" fill="#161619"/>
+  <circle cx="300" cy="272" r="96" fill="none" stroke="#2a2a30" stroke-width="10"/>
+  <path d="M262 232v80M262 232c-10 0-16 8-16 20s6 20 16 20M338 232v40c0 12-8 20-18 20h-4v40" fill="none" stroke="#3a3a42" stroke-width="10" stroke-linecap="round"/>
+  <text x="300" y="424" text-anchor="middle" font-family="Outfit, sans-serif" font-size="30" font-weight="700" fill="#4a4a53" letter-spacing="4">IMAGE</text>
+</svg>

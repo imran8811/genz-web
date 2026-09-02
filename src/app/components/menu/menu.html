@@ -1,0 +1,157 @@
+<section class="menu-page">
+  <div class="container">
+    <div class="page-head">
+      <span class="eyebrow">Order Online</span>
+      <h1 class="display">The <span class="text-yellow">Menu</span></h1>
+    </div>
+  </div>
+
+  <!-- Sticky category tabs -->
+  <div class="tabs-wrap">
+    <div class="container tabs">
+      @for (t of tabs(); track t.slug) {
+        <button class="tab" [attr.data-tab]="t.slug" [class.active]="activeTab() === t.slug" (click)="setTab(t.slug)">
+          {{ t.name }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="container body">
+    @if (loading()) {
+      <div class="center loading"><div class="spinner"></div><p>Loading menu…</p></div>
+    } @else {
+      <!-- ===== All categories, stacked ===== -->
+      @for (cat of categories(); track cat.slug) {
+        <section class="menu-section" [id]="cat.slug" [attr.data-section]="cat.slug">
+          <h2 class="group-title">{{ cat.name }}</h2>
+          <div class="grid">
+            @for (item of cat.items; track item.slug) {
+              <div class="card item-card fade-up">
+                <div class="item-media">
+                  @if (item.is_signature) { <span class="badge badge-signature media-badge">Signature</span> }
+                  @else if (item.is_special) { <span class="badge badge-special media-badge">Special</span> }
+                  @if (hasImage(item.slug, item.image_url)) {
+                    <img
+                      class="media-img"
+                      [src]="item.image_url"
+                      [alt]="item.name"
+                      loading="lazy"
+                      (error)="imageFailed(item.slug)"
+                    />
+                  } @else {
+                    <span class="media-emoji">{{ cat.type === 'sized' ? '🍕' : '🍔' }}</span>
+                  }
+                </div>
+                <div class="item-body">
+                  <h3>{{ item.name }}</h3>
+                  @if (item.description) { <p class="desc">{{ item.description }}</p> }
+
+                  @if (item.variants.length > 1) {
+                    <div class="sizes">
+                      @for (v of item.variants; track v.label) {
+                        <button class="size" [class.on]="isChosen(item, v)" (click)="chooseVariant(item, v)">{{ v.label }}</button>
+                      }
+                    </div>
+                  }
+
+                  <div class="item-foot">
+                    <span class="price text-yellow"><span class="cur">Rs</span> {{ variantOf(item)?.price | number }}</span>
+                    <button class="btn btn-primary btn-sm" (click)="addItem(item)">Add +</button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      <!-- ===== Deals ===== -->
+      @if (deals().length) {
+        <section class="menu-section" id="deals" data-section="deals">
+          <h2 class="group-title big">🔥 Deals</h2>
+          @for (group of dealGroups(); track group.name) {
+            <h3 class="sub-title">{{ group.name }}</h3>
+            <div class="grid">
+              @for (deal of group.items; track deal.slug) {
+                <div class="card item-card fade-up">
+                  <div class="item-media deal-media">
+                    @if (deal.tag) { <span class="badge badge-special media-badge">{{ deal.tag }}</span> }
+                    @if (hasImage(deal.slug, deal.image_url)) {
+                      <img
+                        class="media-img"
+                        [src]="deal.image_url"
+                        [alt]="deal.name"
+                        loading="lazy"
+                        (error)="imageFailed(deal.slug)"
+                      />
+                    } @else {
+                      <span class="media-emoji">🎁</span>
+                    }
+                  </div>
+                  <div class="item-body">
+                    <h3>{{ deal.name }}</h3>
+                    <p class="desc">{{ deal.description }}</p>
+                    @if (deal.extras.length) {
+                      <ul class="extras">
+                        @for (e of deal.extras; track e) { <li>＋ {{ e }}</li> }
+                      </ul>
+                    }
+                    <div class="item-foot">
+                      <span class="price text-yellow"><span class="cur">Rs</span> {{ deal.price | number }}</span>
+                      <button class="btn btn-primary btn-sm" (click)="startDeal(deal)">
+                        {{ deal.requires_selection ? 'Choose' : 'Add' }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </section>
+      }
+    }
+  </div>
+
+  <!-- Sticky cart bar -->
+  @if (cartCount() > 0) {
+    <a routerLink="/cart" class="cart-bar">
+      <span class="cb-count">{{ cartCount() }} item{{ cartCount() > 1 ? 's' : '' }}</span>
+      <span class="cb-mid">View Cart</span>
+      <span class="cb-total">Rs {{ cartSubtotal() | number }}</span>
+    </a>
+  }
+
+  <!-- Toast -->
+  @if (toast()) { <div class="toast">✓ {{ toast() }}</div> }
+
+  <!-- Deal builder modal -->
+  @if (activeDeal(); as deal) {
+    <div class="modal-overlay" (click)="closeDeal()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-head">
+          <h3>{{ deal.name }}</h3>
+          <button class="x" (click)="closeDeal()">✕</button>
+        </div>
+        <p class="modal-sub">{{ deal.description }}</p>
+        <p class="modal-hint">Choose {{ deal.selection_count }} × {{ deal.selection_size }} pizza{{ deal.selection_count > 1 ? 's' : '' }}:</p>
+
+        @for (pick of dealPicks(); track $index) {
+          <div class="field">
+            <label>Pizza {{ $index + 1 }}</label>
+            <select class="input" [ngModel]="pick" (ngModelChange)="setPick($index, $event)">
+              @for (opt of deal.options; track opt.slug) {
+                <option [value]="opt.name">{{ opt.name }}</option>
+              }
+            </select>
+          </div>
+        }
+
+        <div class="modal-foot">
+          <span class="price text-yellow"><span class="cur">Rs</span> {{ deal.price | number }}</span>
+          <button class="btn btn-primary" (click)="confirmDeal()">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  }
+</section>
