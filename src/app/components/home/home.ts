@@ -4,7 +4,6 @@ import { Router, RouterLink } from '@angular/router';
 import { CatalogService } from '../../services/catalog.service';
 import { CartService } from '../../services/cart.service';
 import { Category, MenuItem } from '../../models/catalog.model';
-import { HOME_BANNER_SLIDES } from './home-banner-slides';
 
 /**
  * Home page.
@@ -16,10 +15,49 @@ import { HOME_BANNER_SLIDES } from './home-banner-slides';
  * (`CatalogService.imageFor`).
  *
  * The hero carousel is the exception: it is marketing artwork, not menu data,
- * so it is simply every image in `public/images/home-banner-slider/`. That
- * folder is listed at build time into `home-banner-slides.ts` — drop a file in
- * and it becomes a slide.
+ * so it is the hand-kept `BANNER_SLIDES` list below.
  */
+
+/** The banner artwork carries its own copy, so a slide is just the image. */
+interface HeroSlide {
+  image: string;
+  alt: string;
+}
+
+/**
+ * Home banner carousel, in display order.
+ *
+ * **To add a banner:** put the image in `public/images/home-banner-slider/` and
+ * add an entry here. The `alt` should say what the artwork says, since the
+ * price and contents are baked into the image and a screen reader can't read
+ * them.
+ */
+const BANNER_SLIDES: HeroSlide[] = [
+  {
+    image: 'images/home-banner-slider/banner-1.png',
+    alt: 'Large Pizza + Zinger deal, Rs 1650 — 1 large 13" pizza, 1 zinger burger, 1 litre Next Cola',
+  },
+  {
+    image: 'images/home-banner-slider/banner-2.png',
+    alt: 'Medium Pizza + Zinger deal, Rs 1099 — 1 medium 8" pizza, 1 zinger burger, 1 litre Next Cola',
+  },
+  {
+    image: 'images/home-banner-slider/banner-3.png',
+    alt: 'Small Pizza + Zinger deal, Rs 850 — 1 small 6" pizza, 1 zinger burger, 500ml Next Cola',
+  },
+  {
+    image: 'images/home-banner-slider/banner-4.png',
+    alt: 'Large Pizza Deal, Rs 1350 — 1 large 13" pizza and 1 litre Next Cola',
+  },
+  {
+    image: 'images/home-banner-slider/banner-5.png',
+    alt: 'Medium Pizza Deal, Rs 850 — 1 large 13" pizza and 1 litre Next Cola',
+  },
+  {
+    image: 'images/home-banner-slider/banner-6.png',
+    alt: 'Small Pizza Deal, Rs 550 — 1 small 6" pizza and 345ml Next Cola',
+  },
+];
 
 interface CategoryTile {
   name: string;
@@ -55,7 +93,7 @@ export class Home implements OnDestroy {
   private router = inject(Router);
 
   /** Static artwork, so the hero is on screen before the feed answers. */
-  readonly slides = HOME_BANNER_SLIDES;
+  readonly slides = BANNER_SLIDES;
   categories = signal<CategoryTile[]>([]);
   products = signal<ProductCard[]>([]);
   loading = signal(true);

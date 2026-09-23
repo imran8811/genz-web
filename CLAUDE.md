@@ -22,16 +22,10 @@ Component SCSS budget: 12kB max each — keep shared styles in global `styles.sc
 - **Menu page** = continuous scroll-spy (all categories stacked, sticky tabs highlight current section via IntersectionObserver), size selectors, deal-builder modal, sticky cart bar.
 - **Home page** is built from the same feed — the category strip from real categories, "Popular right
   now" from real items (photo → Signature → one per category, so the grid isn't eight pizzas).
-- **Home hero carousel** is *not* from the feed: it is marketing artwork, every image in
-  `public/images/home-banner-slider/`, in natural filename order (`banner-2` before `banner-10`).
-  A browser can't list a directory and the app is SSR'd, so `scripts/generate-banner-slides.mjs` reads
-  that folder and writes `components/home/home-banner-slides.ts` (generated — **don't hand-edit**; if
-  the browser shows stale or missing banners, that file is out of date). Builds run it via the
-  `prebuild`/`prewatch`/`pretest` hooks; `npm start` goes through `scripts/dev.mjs`, which runs it in
-  `--watch` mode next to `ng serve` so **adding/renaming/deleting an image reloads the page on its
-  own**. `npm run banner-slides` regenerates on demand; `npm run start:ng` is plain `ng serve` without
-  the watcher. Alt text comes from the filename (`large-pizza-zinger-deal.png` → "Large pizza zinger
-  deal"), so descriptive names beat `banner-N` for accessibility.
+- **Home hero carousel** is *not* from the feed: it is marketing artwork, listed by hand in the
+  `BANNER_SLIDES` array at the top of `components/home/home.ts`, in display order. **To add a banner:
+  drop the image in `public/images/home-banner-slider/` and add an `{ image, alt }` entry.** The
+  artwork has the price and contents printed on it, so write an `alt` that says what the image says.
 
 ## Flows
 - Browse → add (size/deal) → local cart → checkout. Checkout **requires login** (redirects to `/login?redirect=/checkout`, param preserved across login↔signup). Logged-in checkout pre-fills name/phone from the account.

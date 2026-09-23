@@ -3,14 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "banner-slides": "node scripts/generate-banner-slides.mjs",
-    "start": "node scripts/dev.mjs",
-    "start:ng": "ng serve",
-    "prebuild": "npm run banner-slides",
+    "start": "ng serve",
     "build": "npx ng build",
-    "prewatch": "npm run banner-slides",
     "watch": "ng build --watch --configuration development",
-    "pretest": "npm run banner-slides",
     "test": "ng test",
     "serve:ssr:genz-web": "node dist/genz-web/server/server.mjs"
   },
