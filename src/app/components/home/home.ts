@@ -51,7 +51,7 @@ const BANNER_SLIDES: HeroSlide[] = [
   },
   {
     image: 'images/home-banner-slider/banner-5.png',
-    alt: 'Medium Pizza Deal, Rs 850 — 1 large 13" pizza and 1 litre Next Cola',
+    alt: 'Medium Pizza Deal, Rs 850 — 1 medium 8" pizza and 1 litre Next Cola',
   },
   {
     image: 'images/home-banner-slider/banner-6.png',
