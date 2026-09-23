@@ -3,6 +3,7 @@ import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { CatalogService } from '../../services/catalog.service';
+import { DEFAULT_DELIVERY_FEE } from '../../models/catalog.model';
 
 @Component({
   selector: 'app-cart',
@@ -19,12 +20,14 @@ export class Cart {
   itemCount = this.cart.itemCount;
   isEmpty = this.cart.isEmpty;
 
-  deliveryFee = signal(0);
+  deliveryFee = signal(DEFAULT_DELIVERY_FEE);
   total = computed(() => this.subtotal() + this.deliveryFee());
 
   constructor() {
+    // Start at the expected fee rather than 0, so the summary never flashes
+    // "Free" before /site lands — and stays right if it never does.
     this.catalog.getSite().subscribe({
-      next: s => this.deliveryFee.set(s.delivery_fee ?? 0),
+      next: s => this.deliveryFee.set(s.delivery_fee ?? DEFAULT_DELIVERY_FEE),
       error: () => {},
     });
   }

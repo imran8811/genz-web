@@ -14,6 +14,17 @@ export interface SiteInfo {
   delivery_fee: number;
 }
 
+/**
+ * What to show for delivery until `GET /site` answers, and if it never does.
+ *
+ * The server is the authority — it re-prices every order from `delivery_fee` in
+ * genz-web-apis `config/genz.php` — so this is not what gets charged. It exists
+ * so the cart never quotes a total it knows is wrong: falling back to 0 printed
+ * "Free" on an order that would still be billed the fee. **Keep it in step with
+ * that config value.**
+ */
+export const DEFAULT_DELIVERY_FEE = 100;
+
 export interface Variant {
   label: string | null; // size label; null = single-price item
   price: number;

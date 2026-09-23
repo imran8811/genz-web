@@ -7,7 +7,7 @@ import { CatalogService } from '../../services/catalog.service';
 import { OrderService } from '../../services/order.service';
 import { AuthService } from '../../services/auth.service';
 import { ApiService } from '../../services/api.service';
-import { DeliveryDetails } from '../../models/catalog.model';
+import { DEFAULT_DELIVERY_FEE, DeliveryDetails } from '../../models/catalog.model';
 
 @Component({
   selector: 'app-checkout',
@@ -30,7 +30,7 @@ export class Checkout {
   itemCount = this.cart.itemCount;
   isEmpty = this.cart.isEmpty;
 
-  deliveryFee = signal(0);
+  deliveryFee = signal(DEFAULT_DELIVERY_FEE);
   total = computed(() => this.subtotal() + this.deliveryFee());
 
   // form model
@@ -48,7 +48,9 @@ export class Checkout {
 
   constructor() {
     this.catalog.getSite().subscribe({
-      next: s => this.deliveryFee.set(s.delivery_fee ?? 0),
+      // The server re-prices the order from its own config, so the one thing
+      // this must not do is quote a total lower than what will be charged.
+      next: s => this.deliveryFee.set(s.delivery_fee ?? DEFAULT_DELIVERY_FEE),
       error: () => {},
     });
 
