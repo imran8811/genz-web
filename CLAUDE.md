@@ -20,9 +20,16 @@ Component SCSS budget: 12kB max each — keep shared styles in global `styles.sc
 - `models/catalog.model.ts` — Category/MenuItem/Variant/Deal/CartLine/PlacedOrder.
 - `components/`: home, menu, cart, checkout, order-confirmation, header, footer, login/signup/forgot/reset (auth). **No admin** (removed — the menu is managed in [`genz-admin`](../genz-admin)).
 - **Menu page** = continuous scroll-spy (all categories stacked, sticky tabs highlight current section via IntersectionObserver), size selectors, deal-builder modal, sticky cart bar.
-- **Home page** is built from the same feed — hero offers from real deals, the category strip from
-  real categories, "Popular right now" from real items (photo → Signature → one per category, so the
-  grid isn't eight pizzas). Nothing on it is hardcoded; it was static placeholder copy until Sept 2026.
+- **Home page** is built from the same feed — the category strip from real categories, "Popular right
+  now" from real items (photo → Signature → one per category, so the grid isn't eight pizzas).
+- **Home hero carousel** is *not* from the feed: it is marketing artwork, every image in
+  `public/images/home-banner-slider/`, in natural filename order. A browser can't list a directory and
+  the app is SSR'd, so `scripts/generate-banner-slides.mjs` reads that folder at build time and writes
+  `components/home/home-banner-slides.ts` (generated — don't hand-edit). It runs automatically via the
+  `prestart`/`prebuild`/`prewatch`/`pretest` npm hooks, or on demand with `npm run banner-slides`.
+  **To add a banner: drop the image in the folder and restart the dev server / rebuild.** The alt text
+  comes from the filename (`large-pizza-zinger-deal.png` → "Large pizza zinger deal"), so name files
+  descriptively and number them (`banner-1`, `banner-2`, …) if you care about the order.
 
 ## Flows
 - Browse → add (size/deal) → local cart → checkout. Checkout **requires login** (redirects to `/login?redirect=/checkout`, param preserved across login↔signup). Logged-in checkout pre-fills name/phone from the account.

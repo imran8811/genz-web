@@ -3,24 +3,23 @@ import { DecimalPipe, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { CatalogService } from '../../services/catalog.service';
 import { CartService } from '../../services/cart.service';
-import { Category, Deal, MenuItem } from '../../models/catalog.model';
+import { Category, MenuItem } from '../../models/catalog.model';
+import { HOME_BANNER_SLIDES } from './home-banner-slides';
 
 /**
  * Home page.
  *
- * Everything on it — the hero offers, the category strip and "Popular right
- * now" — is built from the **genz-admin public menu feed** (via
- * `CatalogService`), the single source of truth for items, deals and prices.
- * Nothing here is hardcoded: the only static assets left are the fallback
- * photographs used when an item or deal has no image uploaded in genz-admin
+ * The category strip and "Popular right now" are built from the **genz-admin
+ * public menu feed** (via `CatalogService`), the single source of truth for
+ * items, deals and prices; the only static assets there are the fallback
+ * photographs used when an item has no image uploaded in genz-admin
  * (`CatalogService.imageFor`).
+ *
+ * The hero carousel is the exception: it is marketing artwork, not menu data,
+ * so it is simply every image in `public/images/home-banner-slider/`. That
+ * folder is listed at build time into `home-banner-slides.ts` — drop a file in
+ * and it becomes a slide.
  */
-
-/** The banner artwork carries its own copy, so a slide is just the image. */
-interface HeroSlide {
-  image: string;
-  alt: string;
-}
 
 interface CategoryTile {
   name: string;
@@ -41,7 +40,6 @@ interface ProductCard {
 
 const PLACEHOLDER = 'images/placeholder.svg';
 
-const HERO_COUNT = 5;
 const POPULAR_COUNT = 8;
 
 @Component({
@@ -56,7 +54,8 @@ export class Home implements OnDestroy {
   private cart = inject(CartService);
   private router = inject(Router);
 
-  slides = signal<HeroSlide[]>([]);
+  /** Static artwork, so the hero is on screen before the feed answers. */
+  readonly slides = HOME_BANNER_SLIDES;
   categories = signal<CategoryTile[]>([]);
   products = signal<ProductCard[]>([]);
   loading = signal(true);
@@ -77,10 +76,8 @@ export class Home implements OnDestroy {
     // The feed emits twice on a warm load: the cached menu, then the live one.
     this.catalog.getCatalog().subscribe({
       next: ({ categories, deals }) => {
-        this.slides.set(this.buildSlides(deals));
         this.categories.set(this.buildTiles(categories, deals.length > 0));
         this.products.set(this.buildProducts(categories));
-        this.slideIndex.set(0);
         this.loading.set(false);
         this.failed.set(false);
       },
@@ -99,27 +96,6 @@ export class Home implements OnDestroy {
   }
 
   // ── Building the page out of the feed ─────────────────────────────────────
-
-  /** Lead with real photography, then flagged deals, then one per deal group. */
-  private buildSlides(deals: Deal[]): HeroSlide[] {
-    const picked: Deal[] = [];
-    const take = (d: Deal) => {
-      if (picked.length < HERO_COUNT && !picked.some((p) => p.slug === d.slug)) picked.push(d);
-    };
-
-    deals.filter((d) => d.image_url).forEach(take);
-    deals.filter((d) => d.tag).forEach(take);
-    for (const group of new Set(deals.map((d) => d.group))) {
-      const first = deals.find((d) => d.group === group);
-      if (first) take(first);
-    }
-    deals.forEach(take);
-
-    return picked.map((d) => ({
-      image: this.catalog.imageFor({ image_url: d.image_url, category_slug: d.category_slug }),
-      alt: d.name,
-    }));
-  }
 
   private buildTiles(categories: Category[], hasDeals: boolean): CategoryTile[] {
     const tiles = categories.map((c) => ({
@@ -201,7 +177,7 @@ export class Home implements OnDestroy {
     // A backgrounded tab would otherwise come back having burned through every
     // slide, landing the visitor somewhere arbitrary.
     if (typeof document !== 'undefined' && document.hidden) return;
-    if (!this.slides().length) return; // nothing to advance until the feed lands
+    if (this.slides.length < 2) return; // a single banner has nothing to advance to
     const next = this.progress() + this.tickMs / this.slideMs;
     if (next >= 1) this.go(1);
     else this.progress.set(next);
@@ -209,7 +185,7 @@ export class Home implements OnDestroy {
 
   /** Step the carousel, wrapping at both ends. */
   go(step: number): void {
-    const count = this.slides().length;
+    const count = this.slides.length;
     if (!count) return;
     this.slideIndex.set((this.slideIndex() + step + count) % count);
     this.progress.set(0);

@@ -1,8 +1,8 @@
-<!-- ===== Hero carousel — real deals from the genz-admin feed ===== -->
-@if (slides().length) {
+<!-- ===== Hero carousel — every image in public/images/home-banner-slider/ ===== -->
+@if (slides.length) {
   <section class="hero">
     <div class="hero-frame">
-      @for (slide of slides(); track $index; let i = $index) {
+      @for (slide of slides; track slide.image; let i = $index) {
         <a
           class="hero-slide"
           [class.on]="i === slideIndex()"
@@ -20,12 +20,12 @@
         </a>
       }
 
-      @if (slides().length > 1) {
+      @if (slides.length > 1) {
         <button class="hero-arrow prev" (click)="go(-1)" aria-label="Previous offer">‹</button>
         <button class="hero-arrow next" (click)="go(1)" aria-label="Next offer">›</button>
 
         <div class="hero-dots">
-          @for (slide of slides(); track $index; let i = $index) {
+          @for (slide of slides; track slide.image; let i = $index) {
             <button
               class="hero-dot"
               [class.on]="i === slideIndex()"
